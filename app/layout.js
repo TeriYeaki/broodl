@@ -19,6 +19,7 @@ export default function RootLayout({ children }) {
 			>
 				Broodl
 			</h1>
+			<div className="flex items-center justify-between">PLACEHOLDER</div>
 		</header>
 	);
 
