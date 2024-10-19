@@ -2,6 +2,7 @@ import { Fugaz_One } from 'next/font/google';
 import React from 'react';
 import Button from './Button';
 import Calendar from './Calendar';
+import Link from 'next/link';
 const fugazOne = Fugaz_One({ subsets: ['latin'], weight: ['400'] });
 
 export default function Hero() {
@@ -21,8 +22,12 @@ export default function Hero() {
         <span className='font-semibold'> everyday of the year</span>
       </p>
       <div className='mx-auto grid w-fit grid-cols-2 gap-4'>
-        <Button text='Sign Up' />
-        <Button text='Login' dark />
+        <Link href={'/dashboard'}>
+          <Button text='Sign Up' />
+        </Link>
+        <Link href={'/dashboard'}>
+          <Button text='Login' dark />
+        </Link>
       </div>
       <Calendar demo />
     </div>
