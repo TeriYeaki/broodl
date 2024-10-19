@@ -2,6 +2,7 @@ import localFont from 'next/font/local';
 import { Fugaz_One, Open_Sans } from 'next/font/google';
 import './globals.css';
 import Calendar from '@/components/Calendar';
+import Link from 'next/link';
 
 const fugazOne = Fugaz_One({ subsets: ['latin'], weight: ['400'] });
 const openSans = Open_Sans({ subsets: ['latin'] });
@@ -13,9 +14,13 @@ export const metadata = {
 export default function RootLayout({ children }) {
   const header = (
     <header className='flex items-center justify-between gap-4 p-4 sm:p-8'>
-      <h1 className={'textGradient text-base sm:text-lg ' + fugazOne.className}>
-        Broodl
-      </h1>
+      <Link href='/'>
+        <h1
+          className={'textGradient text-base sm:text-lg ' + fugazOne.className}
+        >
+          Broodl
+        </h1>
+      </Link>
       <div className='flex items-center justify-between'>PLACEHOLDER</div>
     </header>
   );
