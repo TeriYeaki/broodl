@@ -3,6 +3,7 @@ import { Fugaz_One, Open_Sans } from 'next/font/google';
 import './globals.css';
 import Calendar from '@/components/Calendar';
 import Link from 'next/link';
+import { AuthProvider } from '@/context/AuthContext';
 
 const fugazOne = Fugaz_One({ subsets: ['latin'], weight: ['400'] });
 const openSans = Open_Sans({ subsets: ['latin'] });
@@ -32,16 +33,18 @@ export default function RootLayout({ children }) {
   );
   return (
     <html lang='en'>
-      <body
-        className={
-          'mx-auto flex min-h-screen w-full max-w-[1000px] flex-col text-sm text-slate-800 sm:text-base ' +
-          openSans.className
-        }
-      >
-        {header}
-        {children}
-        {footer}
-      </body>
+      <AuthProvider>
+        <body
+          className={
+            'mx-auto flex min-h-screen w-full max-w-[1000px] flex-col text-sm text-slate-800 sm:text-base ' +
+            openSans.className
+          }
+        >
+          {header}
+          {children}
+          {footer}
+        </body>
+      </AuthProvider>
     </html>
   );
 }
