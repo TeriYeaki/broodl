@@ -7,12 +7,12 @@ import {
   signOut,
 } from 'firebase/auth';
 import { getDoc } from 'firebase/firestore';
-import React, { useConText, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 
 const AuthContext = React.createContext();
 
 export function useAuth() {
-  return useConText(AuthContext);
+  return useContext(AuthContext);
 }
 
 export function AuthProvider({ children }) {
