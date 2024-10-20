@@ -13,14 +13,36 @@ const fugazOne = Fugaz_One({ subsets: ['latin'], weight: ['400'] });
 export default function Dashboard() {
   const { currentUser, userDataObj, setUserDataObj, loading } = useAuth();
   const [data, setData] = useState({});
+  const now = new Date();
 
-  function countValues() {}
+  function countValues() {
+    let total_number_of_days = 0;
+    let sum_moods = 0;
+    for (let year in data) {
+      for (let month in data[year]) {
+        for (let day in data[year][month]) {
+          let days_mood = data[year][month][day];
+          total_number_of_days++;
+          sum_moods += days_mood;
+        }
+      }
+    }
+    return {
+      num_days: total_number_of_days,
+      average_mood: parseFloat((sum_moods / total_number_of_days).toFixed(1)),
+    };
+  }
+
+  const statuses = {
+    ...countValues(),
+    time_remaining: `${23 - now.getHours()}H ${60 - now.getMinutes()}M`,
+  };
 
   async function handleSetMood(mood) {
-    const now = new Date();
     const day = now.getDate();
     const month = now.getMonth();
     const year = now.getFullYear();
+
     try {
       const newData = { ...userDataObj };
       if (!newData?.[year]) {
@@ -31,7 +53,6 @@ export default function Dashboard() {
       }
 
       newData[year][month][day] = mood;
-
       // update the current state
       setData(newData);
       // update the global state
@@ -54,12 +75,6 @@ export default function Dashboard() {
     }
   }
 
-  const statuses = {
-    num_days: 14,
-    time_remaining: '13:14:26',
-    date: new Date().toDateString(),
-  };
-
   const moods = {
     '&*@#$': '😭',
     Sad: '😢',
@@ -78,6 +93,7 @@ export default function Dashboard() {
   if (loading) {
     return <Loading />;
   }
+
   if (!currentUser) {
     return <Login />;
   }
@@ -87,8 +103,8 @@ export default function Dashboard() {
       <div className='grid grid-cols-3 gap-4 rounded-lg bg-indigo-50 p-4 text-indigo-500'>
         {Object.keys(statuses).map((status, statusIndex) => {
           return (
-            <div key={statusIndex} className='flex flex-col gap-1 p-4 sm:gap-2'>
-              <p className='truncate text-xs font-medium uppercase sm:text-sm'>
+            <div key={statusIndex} className='flex flex-col gap-1 sm:gap-2'>
+              <p className='truncate text-xs font-medium capitalize sm:text-sm'>
                 {status.replaceAll('_', ' ')}
               </p>
               <p
@@ -97,6 +113,7 @@ export default function Dashboard() {
                 }
               >
                 {statuses[status]}
+                {status === 'num_days' ? ' 🔥' : ''}
               </p>
             </div>
           );
