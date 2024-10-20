@@ -119,6 +119,7 @@ export default function Calendar(props) {
                       : true;
 
                 let isToday = dayIndex === now.getDate();
+                let isThisMonth = currMonth == numericMonth;
 
                 if (!dayDisplay) {
                   return <div className='bg-white' key={dayOfWeekIndex} />;
@@ -135,7 +136,9 @@ export default function Calendar(props) {
                     style={{ background: color }}
                     className={
                       'flex items-center justify-between gap-2 rounded-lg border border-solid p-2 text-xs sm:text-sm ' +
-                      (isToday ? ' border-indigo-400' : ' border-indigo-100') +
+                      (isToday && isThisMonth
+                        ? ' border-4 border-indigo-400'
+                        : ' border-indigo-100') +
                       (color === 'white' ? ' text-indigo-400' : ' text-white')
                     }
                     key={dayOfWeekIndex}
