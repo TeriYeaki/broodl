@@ -5,6 +5,7 @@ import Calendar from '@/components/Calendar';
 import Link from 'next/link';
 import { AuthProvider } from '@/context/AuthContext';
 import Head from './head';
+import Logout from '@/components/Logout';
 
 const fugazOne = Fugaz_One({ subsets: ['latin'], weight: ['400'] });
 const openSans = Open_Sans({ subsets: ['latin'] });
@@ -23,7 +24,7 @@ export default function RootLayout({ children }) {
           Broodl
         </h1>
       </Link>
-      <div className='flex items-center justify-between'>PLACEHOLDER</div>
+      <Logout />
     </header>
   );
 
