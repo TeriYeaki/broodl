@@ -26,7 +26,7 @@ export default function Dashboard() {
       if (!newData?.[year]) {
         newData[year] = {};
       }
-      if (!newData?.[month]) {
+      if (!newData?.[year]?.[month]) {
         newData[year][month] = {};
       }
 
@@ -41,13 +41,13 @@ export default function Dashboard() {
       const res = await setDoc(
         docRef,
         {
-          year: {
-            month: {
+          [year]: {
+            [month]: {
               [day]: mood,
             },
           },
         },
-        { mearge: true }
+        { merge: true }
       );
     } catch (err) {
       console.log('Failed to set data: ', err.message);
@@ -137,7 +137,7 @@ export default function Dashboard() {
           );
         })}
       </div>
-      <Calendar data={data} handleSetMood={handleSetMood} />
+      <Calendar completeData={data} handleSetMood={handleSetMood} />
     </div>
   );
 }
