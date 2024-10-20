@@ -1,12 +1,12 @@
 'use client';
-import { auth } from '@/firebase';
+import { auth, db } from '@/firebase';
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
 } from 'firebase/auth';
-import { getDoc } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import React, { useContext, useState, useEffect } from 'react';
 
 const AuthContext = React.createContext();
@@ -46,15 +46,14 @@ export function AuthProvider({ children }) {
           return;
         }
 
-        // if user exist fetch data from firestore database
+        // if user exists, fetch data from firestore database
         console.log('Fetching User Data');
         const docRef = doc(db, 'users', user.uid);
         const docSnap = await getDoc(docRef);
         let firebaseData = {};
         if (docSnap.exists()) {
           console.log('Found User Data');
-          firebaseData = docSnap.get.data();
-          console.log(firebaseData); // TODO: delete this in production
+          firebaseData = docSnap.data();
         }
         setUserDataObj(firebaseData);
       } catch (err) {
