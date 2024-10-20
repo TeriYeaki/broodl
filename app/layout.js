@@ -4,6 +4,7 @@ import './globals.css';
 import Calendar from '@/components/Calendar';
 import Link from 'next/link';
 import { AuthProvider } from '@/context/AuthContext';
+import Head from './head';
 
 const fugazOne = Fugaz_One({ subsets: ['latin'], weight: ['400'] });
 const openSans = Open_Sans({ subsets: ['latin'] });
@@ -33,6 +34,7 @@ export default function RootLayout({ children }) {
   );
   return (
     <html lang='en'>
+      <Head />
       <AuthProvider>
         <body
           className={
