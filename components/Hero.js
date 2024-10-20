@@ -7,7 +7,7 @@ const fugazOne = Fugaz_One({ subsets: ['latin'], weight: ['400'] });
 
 export default function Hero() {
   return (
-    <div className='flex flex-col gap-4 py-4 sm:gap-8 md:py-10'>
+    <div className='flex flex-col gap-8 py-4 sm:gap-10'>
       <h1
         className={
           'sm:text-text-6xl text-center text-5xl md:text-7xl ' +

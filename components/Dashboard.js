@@ -1,10 +1,57 @@
+'use client';
 import { Fugaz_One } from 'next/font/google';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Calendar from './Calendar';
+import { useAuth } from '@/context/AuthContext';
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from '@/firebase';
 
 const fugazOne = Fugaz_One({ subsets: ['latin'], weight: ['400'] });
 
 export default function Dashboard() {
+  const { currentUser, userDataObj, setUserDataObj } = useAuth();
+  const { data, setData } = useState({});
+
+  function countValues() {}
+
+  async function handleSetMood(mood) {
+    const now = new Date();
+    const day = now.getDate();
+    const month = now.getMonth();
+    const year = now.getFullYear();
+    try {
+      const newData = { ...userDataObj };
+      if (!newData?.[year]) {
+        newData[year] = {};
+      }
+      if (!newData?.[month]) {
+        newData[year][month] = {};
+      }
+
+      newData[year][month][day] = mood;
+
+      // update the current state
+      setData(newData);
+      // update the global state
+      setUserDataObj(newData);
+      // update firebase
+      const docRef = doc(db, 'users', currentUser.uid);
+      const res = await setDoc(
+        docRef,
+        {
+          year: {
+            month: {
+              [day]: mood,
+            },
+          },
+        },
+        { mearge: true }
+      );
+    } catch (err) {
+      console.log('Failed to set data: ', err.message);
+    }
+  }
+
   const statuses = {
     num_days: 14,
     time_remaining: '13:14:26',
@@ -18,6 +65,13 @@ export default function Dashboard() {
     Good: '🙂',
     Elated: '🥰',
   };
+
+  useEffect(() => {
+    if (!currentUser || !userDataObj) {
+      return;
+    }
+    setData(userDataObj);
+  }, [currentUser, userDataObj]);
 
   return (
     <div className='flex flex-1 flex-col gap-8 sm:gap-12 md:gap-16'>
@@ -50,6 +104,10 @@ export default function Dashboard() {
         {Object.keys(moods).map((mood, moodIndex) => {
           return (
             <button
+              onClick={() => {
+                const currentMoodValue = moodIndex + 1;
+                handleSetMood(currentMoodValue);
+              }}
               className={
                 'purpleShadow flex flex-1 flex-col items-center gap-2 rounded-2xl bg-indigo-50 p-4 px-5 text-center duration-200 hover:bg-indigo-100'
               }
@@ -70,7 +128,7 @@ export default function Dashboard() {
           );
         })}
       </div>
-      <Calendar />
+      <Calendar data={data} handleSetMood={handleSetMood} />
     </div>
   );
 }
