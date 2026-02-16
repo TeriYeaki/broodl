@@ -4,6 +4,9 @@
 
 Built with **Next.js (App Router)** + **Tailwind CSS** and backed by **Firebase Authentication + Firestore**.
 
+
+Original course: https://github.com/jamezmca/broodl?tab=readme-ov-file
+
 ---
 
 ## Features 🌟
